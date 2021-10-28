@@ -1,9 +1,18 @@
-FROM golang:1.17
+FROM golang:1.17 AS builder
 
-WORKDIR /go/src/app
+RUN mkdir /app
+ADD . /app
+WORKDIR /app
 COPY . .
 
-RUN go get -d -v ./...
-RUN go install -v ./...
+RUN go mod init test
+#RUN go get -d -v ./...
+#RUN go install -v ./...
 
-CMD ["app"]
+#RUN go build -o main .
+RUN CGO_ENABLED=0 GOOS=linux go build -o main ./...
+
+FROM scratch
+COPY --from=builder /app .
+CMD ["./main"]
+
