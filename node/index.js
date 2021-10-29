@@ -2,7 +2,7 @@ const { application } = require('express')
 const express = require('express')
 const app = express()
 const port = 3000
-const config = {
+/*const config = {
     host: 'db',
     user: 'root',
     password: 'root',
@@ -14,7 +14,7 @@ const connection = mysql.createConnection(config)
 const sql = `INSERT INTO people (name) values ('Thalles')`
 connection.query(sql)
 connection.end()
-
+*/
 app.get('/', (req, res) => {
     res.send('<h1>Full Cycle</h1>')
 })
