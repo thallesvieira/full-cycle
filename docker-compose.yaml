@@ -4,13 +4,14 @@ services:
 
   app:
     build:
-      context: node
+      context: ./node
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s node index.js
     networks:
       - node-network
     volumes:
       - ./node:/usr/src/app
+      - /usr/src/app/node_modules
     tty: true
     ports:
       - "3000:3000"
@@ -26,8 +27,14 @@ services:
     environment:
       - MYSQL_DATABASE=nodedb
       - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ALLOW_EMPTY_PASSWORD=true
+      - MYSQL_RANDOM_ROOT_PASSWORD=false
+      - MYSQL_USER=mxdb
+      - MYSQL_PASSWORD=mxdb
     networks:
       - node-network
+    ports:
+      - "3306:3306"
 
 networks:
   node-network:
