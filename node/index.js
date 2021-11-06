@@ -18,12 +18,15 @@ app.get('/',function(req,res){
     const nome = nomes[i];
     const mysql = require('mysql')
     const connection = mysql.createConnection(config)
+    
+    const createTableQuery = `CREATE TABLE IF NOT EXISTS people (id int not null auto_increment, name varchar(255), primary key(id));`;
     const insertQuery = `INSERT INTO people (name) values ('`+nome+`')`;
     const selectQuery = 'SELECT * FROM people;';
     
     connection.connect();
     console.log("conectado")
     
+    connection.query(createTableQuery);
     connection.query(insertQuery);
     connection.query(selectQuery, function (err, results, fields) {
         responseStr = '';
